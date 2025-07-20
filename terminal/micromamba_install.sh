@@ -58,7 +58,7 @@ fi
 echo "#"
 echo "# Welcome to the Biostar Handbook of Bubble!"
 echo "#"
-echo "# Web: https://smileszh.com"
+echo "# Github: https://github.com/smileszh"
 echo "#"
 echo "# Setting up bioinformatics tools."
 echo "#"
@@ -111,10 +111,20 @@ echo "#"
 ~/bin/micromamba shell init -s bash -r ${ROOT} -q
 
 # Download the environment setup file.
-curl -s http://data.biostarhandbook.com/install/biostar.sh > ~/.biostar.sh
+curl -s https://raw.githubusercontent.com/smileszh/Bubble/refs/heads/main/terminal/biostar.sh > ~/.biostar.sh
 
 # Ensure that the .bashrc file exists.
 touch ~/.bashrc
+
+# Append to biostar.sh if necessary.
+if ! grep -q "alias conda" ~/.biostar.sh; then
+  echo "" >> ~/.biostar.sh
+  echo "# Alias conda and mamba to micromamba" >> ~/.biostar.sh
+  echo "alias mamba=micromamba" >> ~/.biostar.sh
+  echo "alias conda=micromamba" >> ~/.biostar.sh
+  echo "" >> ~/.biostar.sh
+fi
+
 
 # Append to bashrc if necessary.
 if ! grep -q ".biostar.sh" ~/.bashrc; then
@@ -145,7 +155,7 @@ echo "# 5. Installing tools into ${ENV_BIOINFO}"
 echo "#"
 
 # Download the conda specification file.
-curl -s http://data.biostarhandbook.com/install/conda.txt > ${CONDA_SPEC}
+curl -s https://raw.githubusercontent.com/smileszh/Bubble/refs/heads/main/terminal/conda.txt > ${CONDA_SPEC}
 
 # Install the conda packages
 ~/bin/micromamba install -r ${ROOT} -n ${ENV_BIOINFO} -f ${CONDA_SPEC} -y -q
@@ -156,7 +166,7 @@ echo "#"
 
 # Install the doctor.py 
 mkdir -p ~/bin
-curl -s http://data.biostarhandbook.com/install/doctor.py > ~/bin/doctor.py
+curl -s https://raw.githubusercontent.com/smileszh/Bubble/refs/heads/main/terminal/doctor.py > ~/bin/doctor.py
 chmod +x ~/bin/doctor.py
 
 # Install the bio package.
@@ -181,7 +191,7 @@ set -eu
 (mkdir -p ~/.parallel && touch ~/.parallel/will-cite)
 
 # Installation completed.
-echo "# The Biostar Handbook software installation has completed!"
+echo "# The Biostar Handbook of Bubble software installation has completed!"
 echo "#"
 echo "# Restart the terminal or type: source ~/.bash_profile"
 echo "#"
