@@ -1,9 +1,11 @@
 #
-# Biostar Handbook system bootstrap.
-#
+# Biostar Handbook of bubble system bootstrap.
+# Micromamba
+# 
 
 # Check that the script runs using bash
-if [ -z "$BASH_VERSION" ]; then
+if [ -z "$BASH_VERSION" ]
+then
   echo "#"
   echo "# Error: The script was designed to be run using the bash shell!"
   echo "#"
@@ -15,37 +17,48 @@ if [ -z "$BASH_VERSION" ]; then
 fi
 
 # Check that bzip2 is present.
+# The micromamba needs `curl` and `tar` with support for bzip2.
 if ! command -v bzip2 &> /dev/null
 then
     echo "#"
     echo "# Error: bzip2 command not found"
     echo "#"
     echo "# Please install bzip2 and try again:"
-    echo "# "
+    echo "#"
     echo "#     sudo apt install -y  bzip2"
     exit 1
 fi
 
 # Bash strict mode.
+# This will cause the script to exit on any error.
 set -ue
 
-# Check if the current directory is the home directory
-if [ "$PWD" != "$HOME" ]; then
+# Check if the current directory is the home directory.
+if [ "$PWD" != "$HOME" ]
+then
   echo "#"
-  echo "# Error: The installation must be run from your HOME directory!"
+  echo "# Note: The installation must be run from your HOME directory!"
   echo "#"
-  echo "# Please move to the home directory and try again:" 
+  echo "# Attempted to automatically change to the HOME directory." 
   echo "#"
-  echo "#     cd $HOME"
-  echo "#"
-  exit 1
+  cd "$HOME" || { echo "# Failed to switch to home directory."; exit 1; }
+  # Check again
+  if [ "$PWD" != "$HOME" ]
+  then
+    echo "# Still not in home directory. Exiting."
+    echo "# Please move to the home directory and try again:"
+    echo "#"
+    echo "# cd $HOME"
+    echo "#"
+    exit 1
+  fi
 fi
 
 
 echo "#"
-echo "# Welcome to the Biostar Handbook!"
+echo "# Welcome to the Biostar Handbook of Bubble!"
 echo "#"
-echo "# Web: https://www.biostarhandbook.com/"
+echo "# Web: https://smileszh.com"
 echo "#"
 echo "# Setting up bioinformatics tools."
 echo "#"
@@ -53,16 +66,13 @@ echo "#"
 # Bioinformatics tool environment name.
 ENV_BIOINFO=bioinfo
 
-# Statistics environment name.
-ENV_STATS=stats
-
 # Conda root prefix.
 ROOT=~/micromamba
 
 # Version of Python to use.
 PY_VER=3.12
 
-# Conda specification file
+# Conda specification file.
 CONDA_SPEC=~/.biostar.conda.txt
 
 # We need this to avoid a superfluous warning.
